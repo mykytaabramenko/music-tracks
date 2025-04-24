@@ -37,7 +37,6 @@ The app will be available at `http://localhost:3000`.
   Display a default placeholder when no cover image URL is provided.
 
 - **Delete Confirmation**  
-  Confirmation dialog before deleting a track.
 
 - **Toast Notifications**  
   Success and error toasts for create, update, and delete operations using MUI Snackbar and Alert.
