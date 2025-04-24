@@ -5,6 +5,7 @@ import Tracks from "./pages/Tracks.jsx";
 import UpdateModal from "./components/TrackList/Modals/UpdateModal.jsx";
 import CreateModal from "./components/TrackList/Modals/CreateModal.jsx";
 import Toast from "./components/common/Toast.jsx";
+import NotFound from "./pages/NotFound.jsx";
 
 export function AppRoutes() {
   const location = useLocation();
@@ -35,6 +36,7 @@ export function AppRoutes() {
               </>
             }
           />
+          <Route path="*" element={<NotFound />} />
         </Route>
       </Routes>
       {background && (
