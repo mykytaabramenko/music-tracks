@@ -1,12 +1,71 @@
-# React + Vite
+# Music Tracks Manager
 
-This template provides a minimal setup to get React working in Vite with HMR and some ESLint rules.
+A simple React application for managing music tracks, built with Vite and Material-UI.
 
-Currently, two official plugins are available:
+## Getting Started
 
-- [@vitejs/plugin-react](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react) uses [Babel](https://babeljs.io/) for Fast Refresh
-- [@vitejs/plugin-react-swc](https://github.com/vitejs/vite-plugin-react/blob/main/packages/plugin-react-swc) uses [SWC](https://swc.rs/) for Fast Refresh
+To install dependencies and run the app locally:
 
-## Expanding the ESLint configuration
+```bash
+npm install
+npm start
+```
 
-If you are developing a production application, we recommend using TypeScript with type-aware lint rules enabled. Check out the [TS template](https://github.com/vitejs/vite/tree/main/packages/create-vite/template-react-ts) for information on how to integrate TypeScript and [`typescript-eslint`](https://typescript-eslint.io) in your project.
+The app will be available at `http://localhost:3000`.
+
+## Core Features
+
+- **CRUD Modals**  
+  Create and edit track metadata (title, artist, album, genres, cover image) in modal dialogs using React Router v6 modal routes.
+
+- **Playback**  
+  Play/pause inline by clicking the row, with a progress indicator at the bottom of the row.
+
+- **Filtering & Search**  
+  Filter tracks by artist, genre, and perform search by title, artist, or album.
+
+- **Sorting**  
+  Sort tracks by title, artist, album, or genre in ascending/descending order.
+
+- **Pagination**  
+  Server-side pagination with controls to navigate between pages and adjust items per page.
+
+- **Form Validation**  
+  Real-time and on-blur validation with React Hook Form for required fields and cover image URL format checks.
+
+- **Default Cover Image**  
+  Display a default placeholder when no cover image URL is provided.
+
+- **Delete Confirmation**  
+  Confirmation dialog before deleting a track.
+
+- **Toast Notifications**  
+  Success and error toasts for create, update, and delete operations using MUI Snackbar and Alert.
+
+- **Loading States & Accessibility**  
+  Loading indicators, disabled states with both `disabled` and `aria-disabled="true"`, and `data-loading="true"` attributes.  
+  Each interactive element and form error has a `data-testid` for reliable testing.
+
+## `data-testid` Reference
+
+Some of the test IDs used throughout the app:
+
+- `tracks-header` – Main page heading
+- `create-track-button` – Button to open Create Track modal
+- `track-form`, `input-title`, `input-artist`, … – Track form and its inputs
+- `filter-genre`, `filter-artist`, `search-input` – Filter controls
+- `sort-select`, `order-select` – Sorting controls
+- `pagination`, `pagination-next`, `pagination-prev` – Pagination
+- `track-item-{id}`, `audio-player-{id}`, `play-button-{id}`, `pause-button-{id}`, `audio-progress-{id}` – Track row and player
+- `confirm-dialog`, `confirm-delete`, `cancel-delete` – Delete confirmation
+- `toast-container`, `toast-success`, `toast-error` – Toast notifications
+
+## Technologies
+
+- **Frontend:** React, Vite, Material-UI, React Hook Form, TanStack Query, React Router
+- **Styling:** Styled Components
+- **Backend:** Node.js API (provided separately)
+
+## License
+
+This project is for educational purposes.
