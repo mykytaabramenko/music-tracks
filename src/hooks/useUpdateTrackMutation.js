@@ -12,7 +12,7 @@ export function useUpdateTrackMutation(track) {
     onSuccess: (updatedTrack) => {
       queryClient.invalidateQueries({ queryKey: ["tracks"] });
       queryClient.setQueryData(["track", track.slug], updatedTrack);
-      navigate(-1);
+      navigate("/tracks");
       showToast({
         message: "Track updated successfully",
         severity: "success",

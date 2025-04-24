@@ -27,3 +27,12 @@ export async function deleteTrack(id) {
   const { data } = await deleteData(`/api/tracks/${id}`);
   return data;
 }
+
+export async function uploadTrack(id, params) {
+  const { data } = await createData(`/api/tracks/${id}/upload`, params, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+    },
+  });
+  return data;
+}

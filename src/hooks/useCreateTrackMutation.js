@@ -16,7 +16,7 @@ export function useCreateTrackMutation() {
         message: "Track created successfully",
         severity: "success",
       });
-      navigate(-1);
+      navigate("/tracks");
     },
     onError: (error) => {
       queryClient.invalidateQueries({ queryKey: ["tracks"] });

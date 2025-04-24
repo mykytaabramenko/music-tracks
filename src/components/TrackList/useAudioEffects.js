@@ -2,10 +2,11 @@ import { useEffect, useRef, useState } from "react";
 
 import { useAudioContext } from "../contexts/AudioContext.js";
 import { PlaybackStates } from "../../constants.js";
+import { getPlaybackUri } from "../../utils.js";
 
 export function useAudioEffects(audioFile, id) {
   const [playbackData, setPlaybackData] = useState({ progress: 0, state: "" });
-  const audioRef = useRef(new Audio(audioFile));
+  const audioRef = useRef(new Audio(getPlaybackUri(audioFile)));
   const { currentId, setCurrentId } = useAudioContext();
   const isCurrentTrackActive = currentId === id;
 
@@ -19,12 +20,16 @@ export function useAudioEffects(audioFile, id) {
     return () => audio.removeEventListener("ended", handleEnded);
   }, []);
 
+  const prevActive = useRef(isCurrentTrackActive);
   useEffect(() => {
     const audio = audioRef.current;
-    if (isCurrentTrackActive) return;
-    audio.pause();
-    setPlaybackData({ progress: 0, state: "" });
-  }, [isCurrentTrackActive, setPlaybackData]);
+    if (prevActive.current && !isCurrentTrackActive) {
+      audio.pause();
+      audio.currentTime = 0;
+      setPlaybackData({ progress: 0, state: "" });
+    }
+    prevActive.current = isCurrentTrackActive;
+  }, [isCurrentTrackActive]);
 
   useEffect(() => {
     const audio = audioRef.current;

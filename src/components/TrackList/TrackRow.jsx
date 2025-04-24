@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { Box, IconButton, TableCell, TableRow } from "@mui/material";
 import EditIcon from "@mui/icons-material/Edit";
 import DeleteIcon from "@mui/icons-material/Delete";
@@ -12,25 +12,21 @@ import useAudioEffects from "./useAudioEffects.js";
 import PlaybackProgress from "./PlaybackProgress.jsx";
 import useDeleteTrackMutation from "../../hooks/useDeleteTrackMutation.js";
 import { PlaybackStates } from "../../constants.js";
+import UploadIcon from "@mui/icons-material/Upload";
 
 export function TrackRow({ track }) {
-  const { id, title, artist, album, genres, slug, coverImage } = track;
-  let { audioFile } = track;
-  // temp solution, because there is no API for loading of track
-  if (audioFile) {
-    audioFile = "https://samplelib.com/lib/preview/mp3/sample-15s.mp3";
-  }
-  const location = useLocation();
+  const { id, title, artist, album, genres, slug, coverImage, audioFile } =
+    track;
   const navigate = useNavigate();
   const [confirmDeleteOpen, setConfirmDeleteOpen] = useState(false);
   const { playbackData, setPlaybackData, audioRef, setCurrentId } =
     useAudioEffects(audioFile, id);
 
-  const isPlaying = playbackData.state === "playing";
+  const isPlaying = playbackData.state === PlaybackStates.PLAYING;
 
   const deleteMutation = useDeleteTrackMutation(id);
 
-  function handlePlayButtonClick() {
+  function togglePlay() {
     if (!audioFile) return;
     const audio = audioRef.current;
     if (!playbackData.state) {
@@ -55,15 +51,12 @@ export function TrackRow({ track }) {
 
   function handleEditButtonClick(e, trackSlug) {
     e.stopPropagation();
-    navigate(`/tracks/${trackSlug}/edit`, {
-      state: {
-        background: {
-          pathname: location.pathname,
-          search: location.search,
-          hash: location.hash,
-        },
-      },
-    });
+    navigate(`/tracks/${trackSlug}/edit`);
+  }
+
+  function handleUploadButtonClick(e, trackSlug) {
+    e.stopPropagation();
+    navigate(`/tracks/${trackSlug}/upload`);
   }
 
   function handleDeleteButtonClick(e) {
@@ -72,7 +65,7 @@ export function TrackRow({ track }) {
   }
 
   async function handleConfirmDelete() {
-    await deleteMutation.mutate();
+    deleteMutation.mutate();
     setConfirmDeleteOpen(false);
   }
 
@@ -100,12 +93,16 @@ export function TrackRow({ track }) {
         }}
         data-testid={`track-item-${id}`}
       >
-        <TableCell data-testid={`track-item-${id}-title`}>
+        <TableCell
+          data-testid={`track-item-${id}-title`}
+          sx={{
+            width: 56,
+            px: 1,
+            textAlign: "center",
+          }}
+        >
           {audioFile && (
-            <IconButton
-              onClick={handlePlayButtonClick}
-              data-testid={`audio-player-${id}`}
-            >
+            <IconButton onClick={togglePlay} data-testid={`audio-player-${id}`}>
               {renderAudioIcon()}
             </IconButton>
           )}
@@ -132,6 +129,12 @@ export function TrackRow({ track }) {
         <TableCell>{album || "-"}</TableCell>
         <TableCell>{genres.join(", ") || "-"}</TableCell>
         <TableCell align={"center"}>
+          <IconButton
+            data-testid={`edit-track-${id}`}
+            onClick={(e) => handleUploadButtonClick(e, slug)}
+          >
+            <UploadIcon />
+          </IconButton>
           <IconButton
             data-testid={`edit-track-${id}`}
             onClick={(e) => handleEditButtonClick(e, slug)}

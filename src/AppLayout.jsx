@@ -1,35 +1,44 @@
 import { Outlet } from "react-router-dom";
-import styled from "styled-components";
+import { Box, Container } from "@mui/material";
+import Toast from "./components/common/Toast.jsx";
+import { useToastContext } from "./components/contexts/ToastContext.js";
 
-const StyledAppLayout = styled.div`
-  height: 100vh;
-`;
+export default function AppLayout() {
+  const { toast, hideToast } = useToastContext();
 
-const Main = styled.main`
-  //background-color: green;
-  padding: 4rem 4.8rem 6.4rem;
-  overflow: scroll;
-  height: 100%;
-`;
-
-const Container = styled.div`
-  max-width: 120rem;
-  margin: 0 auto;
-  display: flex;
-  flex-direction: column;
-  gap: 3.2rem;
-`;
-
-function AppLayout() {
   return (
-    <StyledAppLayout>
-      <Main>
-        <Container>
+    <Box
+      sx={{
+        height: "100vh",
+        display: "flex",
+        flexDirection: "column",
+      }}
+    >
+      <Box
+        component="main"
+        sx={{
+          flex: 1,
+          p: { xs: 4, sm: 6 },
+          overflow: "auto",
+        }}
+      >
+        <Container
+          maxWidth="xl"
+          sx={{
+            display: "flex",
+            flexDirection: "column",
+            gap: "3.2rem",
+          }}
+        >
           <Outlet />
         </Container>
-      </Main>
-    </StyledAppLayout>
+      </Box>
+      <Toast
+        open={toast.open}
+        onClose={hideToast}
+        message={toast.message}
+        severity={toast.severity}
+      />
+    </Box>
   );
 }
-
-export default AppLayout;
